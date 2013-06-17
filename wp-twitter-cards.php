@@ -48,8 +48,8 @@ class WP_Twitter_Cards {
 
 					for($i=1; $i <= 4; $i++){
 						new MultiPostThumbnails( array(
-							'label' => 'Twitter Gallery Image #' . $i,
-							'id' => 'twitter-gallery-image-' . $i,
+							'label' => 'Twitter Card - Gallery Image #' . $i,
+							'id' => 'twitter-card-gallery-image-' . $i,
 							'post_type' => $post_type
 						) );
 					}
@@ -58,8 +58,8 @@ class WP_Twitter_Cards {
 				if( in_array( 'summary_large_image', array_keys( $card_types ) ) ){
 
 					new MultiPostThumbnails( array(
-						'label' => 'Twitter Large Image',
-						'id' => 'twitter-large-image',
+						'label' => 'Twitter Card - Large Image',
+						'id' => 'twitter-card-large-image',
 						'post_type' => $post_type
 					) );
 				}
@@ -81,8 +81,8 @@ class WP_Twitter_Cards {
 					) );
 
 					new MultiPostThumbnails( array(
-						'label' => 'Twitter Product Image',
-						'id' => 'twitter-product-image',
+						'label' => 'Twitter Card - Product Image',
+						'id' => 'twitter-card-product-image',
 						'post_type' => $post_type
 					) );
 				}
@@ -141,13 +141,13 @@ class WP_Twitter_Cards {
 		foreach( array( 'normal', 'advanced', 'side' ) as $context ){
 			if( $card_type != 'gallery' ){
 				for($i=1; $i <= 4; $i++)
-					remove_meta_box( sprintf( '%s-twitter-gallery-image-%d', $post_type, $i ), $post_type, $context );
+					remove_meta_box( sprintf( '%s-twitter-card-gallery-image-%d', $post_type, $i ), $post_type, $context );
 			}
 			if( $card_type != 'summary_large_image' ){
-				remove_meta_box( sprintf( '%s-twitter-large-image', $post_type ), $post_type, $context );
+				remove_meta_box( sprintf( '%s-twitter-card-large-image', $post_type ), $post_type, $context );
 			}
 			if( $card_type != 'product' ){
-				remove_meta_box( sprintf( '%s-twitter-product-image', $post_type ), $post_type, $context );
+				remove_meta_box( sprintf( '%s-twitter-card-product-image', $post_type ), $post_type, $context );
 				for( $i=1; $i<=2; $i++ ){
 					remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_label' . $i );
 					remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_data' . $i );
@@ -179,8 +179,8 @@ class WP_Twitter_Cards {
 
 				$images = array();
 				for($i=1; $i <= 4; $i++){
-					if( MultiPostThumbnails::has_post_thumbnail( get_post_type(), 'twitter-gallery-image-' . $i, get_queried_object_id() ) ){
-						$images['image' . ($i - 1)] = MultiPostThumbnails::get_post_thumbnail_url( get_post_type(), 'twitter-gallery-image-' . $i, get_queried_object_id(), 'medium' );
+					if( MultiPostThumbnails::has_post_thumbnail( get_post_type(), 'twitter-card-gallery-image-' . $i, get_queried_object_id() ) ){
+						$images['image' . ($i - 1)] = MultiPostThumbnails::get_post_thumbnail_url( get_post_type(), 'twitter-card-gallery-image-' . $i, get_queried_object_id(), 'medium' );
 					}
 				}
 
@@ -190,13 +190,13 @@ class WP_Twitter_Cards {
 			break;
 			case 'summary_large_image':
 
-				if( MultiPostThumbnails::has_post_thumbnail( get_post_type(), 'twitter-large-image', get_queried_object_id() ) )
-					$card_data['image'] = MultiPostThumbnails::get_post_thumbnail_url( get_post_type(), 'twitter-large-image', get_queried_object_id(), 'large' );
+				if( MultiPostThumbnails::has_post_thumbnail( get_post_type(), 'twitter-card-large-image', get_queried_object_id() ) )
+					$card_data['image'] = MultiPostThumbnails::get_post_thumbnail_url( get_post_type(), 'twitter-card-large-image', get_queried_object_id(), 'large' );
 
 			break;
 			case 'product':
-				if( MultiPostThumbnails::has_post_thumbnail( get_post_type(), 'twitter-product-image', get_queried_object_id() ) )
-					$card_data['image'] = MultiPostThumbnails::get_post_thumbnail_url( get_post_type(), 'twitter-product-image', get_queried_object_id(), 'large' );
+				if( MultiPostThumbnails::has_post_thumbnail( get_post_type(), 'twitter-card-product-image', get_queried_object_id() ) )
+					$card_data['image'] = MultiPostThumbnails::get_post_thumbnail_url( get_post_type(), 'twitter-card-product-image', get_queried_object_id(), 'large' );
 			break;
 			case 'photo':
 			case 'summary':
