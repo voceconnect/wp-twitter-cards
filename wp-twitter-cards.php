@@ -90,6 +90,12 @@ class WP_Twitter_Cards {
 		}
 	}
 
+	/**
+	 * Adds support for the $post_type and for the $card_types provided.
+	 * If no $card_types provided, uses self::$card_types by default
+	 * @param string  $post_type
+	 * @param boolean|array $card_types
+	 */
 	public static function add_post_type($post_type, $card_types = false){
 		if( !isset( self::$post_types[$post_type] ) ){
 			if( !$card_types )
@@ -99,17 +105,33 @@ class WP_Twitter_Cards {
 		}
 	}
 
+	/**
+	 * Gets the title to use for the Twitter Card by looking for the Twitter Card title setting,
+	 * if that is either disabled or empty, it uses the post title.
+	 * @return string
+	 */
 	static function get_the_title(){
 		$title_setting_val = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_title' );
 		return apply_filters( 'twitter_card_title_setting_disabled', false ) ? get_the_title() : ( !empty( $title_setting_val ) ? $title_setting_val : get_the_title() );
 	}
 
+	/**
+	 * Gets the description to use for the Twitter Card by looking for the Twitter Card description setting,
+	 * if that is either disabled or empty, it uses the post excerpt and if that is not explicitly set, sets it to a 40-word max trimmed post content
+	 * @return string
+	 */
 	static function get_the_description(){
 		$description_setting_val = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_description' );
 		$description = ( has_excerpt() ) ? get_the_excerpt() : wp_trim_words( strip_shortcodes( strip_tags( get_post( get_queried_object_id() )->post_content ) ), 40, '...' );
 		return apply_filters( 'twitter_card_description_setting_disabled', false ) ? $description : ( !empty( $description_setting_val ) ? $description_setting_val : $description );
 	}
 
+	/**
+	 * Action to remove meta fields and meta boxes based on the Twitter Card type
+	 * Only show fields that are relevent to the currently selected type.
+	 * @param string $post_type
+	 * @param WP_Post $post
+	 */
 	static function add_meta_boxes($post_type, $post){
 		if( !post_type_supports( $post_type, $post_type . '_twitter_card' ) )
 			return;
@@ -135,6 +157,10 @@ class WP_Twitter_Cards {
 
 	}
 
+	/**
+	 * Renders card meta fields in wp_head
+	 * @return string
+	 */
 	static function render_card_meta(){
 		if( !is_singular( array_keys( self::$post_types ) ) )
 			return;
@@ -184,12 +210,16 @@ class WP_Twitter_Cards {
 			break;
 		}
 
+		// Filter Twitter Card data so any values can be overridden externally from the plugin.
 		$card_data = apply_filters( 'twitter_card_data', $card_data );
 
 		foreach ( $card_data as $key => $value ) {
 			if ( empty($value) )
 				continue;
 
+		// Gallery cards are not valid unless all four images are set
+		// Photo cards are not valid unless there is a image set
+		// If not valid, return empty.
 		if( $card_type == 'gallery' ){
 			for( $i=0; $i<4; $i++ ){
 				if( !isset( $card_data['image' . $i] ) || empty( $card_data['image' . $i] ) )
