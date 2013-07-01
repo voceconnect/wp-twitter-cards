@@ -153,6 +153,10 @@ class WP_Twitter_Cards {
 					remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_data' . $i );
 				}
 			}
+			if( $card_type == 'none' ){
+				remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_title' );
+				remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_description' );
+			}
 		}
 
 	}
