@@ -201,6 +201,11 @@ class WP_Twitter_Cards {
 			case 'product':
 				if( MultiPostThumbnails::has_post_thumbnail( get_post_type(), 'twitter-card-product-image', get_queried_object_id() ) )
 					$card_data['image'] = MultiPostThumbnails::get_post_thumbnail_url( get_post_type(), 'twitter-card-product-image', get_queried_object_id(), 'large' );
+
+				$card_data['data1'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_data1' );
+				$card_data['label1'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_label1' );
+				$card_data['data2'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_data2' );
+				$card_data['label2'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_label2' );
 			break;
 			case 'photo':
 			case 'summary':
@@ -217,10 +222,6 @@ class WP_Twitter_Cards {
 		// Filter Twitter Card data so any values can be overridden externally from the plugin.
 		$card_data = apply_filters( 'twitter_card_data', $card_data );
 
-		foreach ( $card_data as $key => $value ) {
-			if ( empty($value) )
-				continue;
-
 		// Gallery cards are not valid unless all four images are set
 		// Photo cards are not valid unless there is a image set
 		// If not valid, return empty.
@@ -232,7 +233,18 @@ class WP_Twitter_Cards {
 		} else if( $card_type == 'photo' ){
 			if( !isset( $card_data['image'] ) || empty( $card_data['image'] ) )
 				return;
+		} else if( $card_type == 'product' ){
+			foreach( array( 'image', 'data1', 'label1', 'data2', 'label2' ) as $required ){
+				error_log($required);
+				if( !isset( $card_data[$required] ) || empty( $card_data[$required] ) )
+					return;
+			}
 		}
+
+
+		foreach ( $card_data as $key => $value ) {
+			if ( empty($value) )
+				continue;
 
 			printf( '<meta name="twitter:%s" content="%s" />' . PHP_EOL, esc_attr( $key ), esc_attr( $value ) );
 		}
