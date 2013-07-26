@@ -235,7 +235,6 @@ class WP_Twitter_Cards {
 				return;
 		} else if( $card_type == 'product' ){
 			foreach( array( 'image', 'data1', 'label1', 'data2', 'label2' ) as $required ){
-				error_log($required);
 				if( !isset( $card_data[$required] ) || empty( $card_data[$required] ) )
 					return;
 			}
