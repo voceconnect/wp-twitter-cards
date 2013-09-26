@@ -9,7 +9,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
 ## Description
-Helper class to generate meta tags for twitter card support.
+Helper class to generate meta tags for twitter card support. When support is added to a post type, a meta box is added on the post edit view to configure the twitter card properties.
 
 ## Installation
 
@@ -26,7 +26,8 @@ if( ! class_exists( 'WP_Twitter_Cards' ) ) {
 
 ## Usage
 On the WordPress `init` hook:  
-`WP_Twitter_Cards::add_post_type( 'post-type-here' );`
+`WP_Twitter_Cards::add_post_type( 'post-type-here' );`  
+In the post edit view configure the Twitter Card metabox to enable the tag output.
 
 ## Changelog
 
