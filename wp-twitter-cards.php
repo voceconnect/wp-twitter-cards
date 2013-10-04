@@ -15,6 +15,9 @@ class WP_Twitter_Cards {
 	public static function init(){
 		if ( !class_exists( 'Voce_Meta_API' ) )
 			return _doing_it_wrong( __FUNCTION__, 'The Voce Post Meta plugin must be active for the Twitter Card integration to work correctly.', '' );
+		if ( !class_exists( 'MultiPostThumbnails' ) )
+			return _doing_it_wrong( __FUNCTION__, 'The Multi Post Thumbnails plugin must be active for the Twitter Card integration to work correctly.', '' );
+
 
 		add_action( 'add_meta_boxes', array( __CLASS__, 'add_meta_boxes' ), 11, 2 );
 		add_action( 'wp_head', array( __CLASS__, 'render_card_meta' ) );
