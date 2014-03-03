@@ -9,10 +9,20 @@
             "email": "klangley@voceconnect.com"
         }
     ],
+	"repositories": [
+	        {
+	            "type": "composer",
+	            "url" : "http://wp-plugins.packagist.voceconnect.com/"
+	        },
+	        {
+	            "type": "composer",
+	            "url" : "http://packagist.voceconnect.com"
+	        }
+	],
     "type": "library",
     "require": {
         "voceconnect/voce-post-meta": "~1.4",
-        "voceconnect/multiple-post-thumbnails": "~1.6"
+        "wpackagist/multiple-post-thumbnails": "~1.6"
     },
     "autoload": {
         "files": ["wp-twitter-cards.php"]
