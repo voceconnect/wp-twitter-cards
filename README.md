@@ -11,6 +11,10 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 ## Description
 Helper class to generate meta tags for twitter card support. When support is added to a post type, a meta box is added on the post edit view to configure the twitter card properties.
 
+Requires both Voce Post Meta and Multi Post Thumbnails WordPress plugins.
+https://github.com/voceconnect/voce-post-meta
+https://github.com/voceconnect/multi-post-thumbnails
+
 ## Installation
 
 ### As standard plugin:
