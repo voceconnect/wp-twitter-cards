@@ -1,5 +1,7 @@
 <?php
 
+if ( !class_exists( 'WP_Twitter_Cards' ) ){
+
 class WP_Twitter_Cards {
 
 	static $card_types = array(
@@ -253,3 +255,5 @@ class WP_Twitter_Cards {
 	}
 }
 add_action( 'init', array( 'WP_Twitter_Cards', 'init' ), 99 );
+
+}
