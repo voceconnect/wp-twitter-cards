@@ -1,0 +1,6 @@
+[submodule "tests/voce-post-meta"]
+	path = tests/voce-post-meta
+	url = git@github.com:voceconnect/voce-post-meta.git
+[submodule "tests/multi-post-thumbnails"]
+	path = tests/multi-post-thumbnails
+	url = git@github.com:voceconnect/multi-post-thumbnails.git
