@@ -2,7 +2,7 @@
     "name": "voceconnect/wp-twitter-cards",
     "description": "Helper class to generate meta tags for twitter card support. When support is added to a post type, a meta box is added on the post edit view to configure the twitter card properties.",
     "keywords": ["wordpress", "twitter", "cards", "meta", "helper"],
-    "license": "GPLv2+",
+    "license": "GPL-2.0+",
     "authors": [
         {
             "name": "Kevin Langley Jr",
@@ -22,9 +22,19 @@
     "type": "library",
     "require": {
         "voceconnect/voce-post-meta": "~1.4",
-        "wpackagist/multiple-post-thumbnails": "~1.6"
+        "wpackagist/multiple-post-thumbnails": "~1.6",
+        "voceconnect/wp-dependencies": "~0.1.1"
+
     },
     "autoload": {
-        "files": ["wp-twitter-cards.php"]
-    }
+        "files": [
+            "wp-twitter-cards.php"
+        ]
+        
+    },
+    "extra": {
+       "installer-paths": {
+           "vendor/{$name}/": ["wpackagist/multiple-post-thumbnails"]
+       }
+   }
 }
