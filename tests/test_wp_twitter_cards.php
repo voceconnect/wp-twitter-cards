@@ -65,13 +65,13 @@ class WP_Twitter_cards_Tests extends WP_UnitTestCase {
      */
 
     function test_meta_box_loaded(){
-        WP_Twitter_Cards::add_post_type( 'post' );
-        set_current_screen( 'post-new.php' );
         global $wp_meta_boxes;
+        WP_Twitter_Cards::add_post_type( 'post' );
+        set_current_screen( 'post-edit.php' );
         if ( is_array ( $wp_meta_boxes ) ) {
             $this->assertArrayHasKey( 'page_twitter_card', $wp_meta_boxes['page']['normal']['default'] );
         } else {
-            $this->assertFalse( true, '$wp_meta_boxes is not an array' );
+            $this->fail( '$wp_meta_boxes is not an array' );
         }
     }
 } 
