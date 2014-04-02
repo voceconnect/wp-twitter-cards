@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "45b1a3297d5c55b0290b8a69c047832e",
+    "hash": "03441ea1a933826d6a21799f8f33d911",
     "packages": [
         {
             "name": "composer/installers",
@@ -46,7 +46,7 @@
                 {
                     "name": "Kyle Robinson Young",
                     "email": "kyle@dontkry.com",
-                    "homepage": "http://dontkry.com",
+                    "homepage": "https://github.com/shama",
                     "role": "Developer"
                 }
             ],
@@ -143,6 +143,45 @@
             "time": "2014-01-02 20:55:53"
         },
         {
+            "name": "voceconnect/wp-dependencies",
+            "version": "v0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/voceconnect/wp-dependencies.git",
+                "reference": "4f3f58d5abef36b28bcdd8e97c3fef6687201d65"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/voceconnect/wp-dependencies/zipball/4f3f58d5abef36b28bcdd8e97c3fef6687201d65",
+                "reference": "4f3f58d5abef36b28bcdd8e97c3fef6687201d65",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.4"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "class-wp-dependency-loader.php"
+                ],
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Prettty",
+                    "email": "mpretty@voceconnect.com"
+                }
+            ],
+            "description": "A composer package for WordPress to help manage plugin dependencies.",
+            "time": "2013-11-05 19:12:23"
+        },
+        {
             "name": "wpackagist/multiple-post-thumbnails",
             "version": "1.6",
             "source": {
@@ -160,7 +199,7 @@
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "http://wordpress.org/extend/plugins/multiple-post-thumbnails"
+            "homepage": "http://wordpress.org/plugins/multiple-post-thumbnails/"
         }
     ],
     "packages-dev": [

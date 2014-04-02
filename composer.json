@@ -22,7 +22,8 @@
     "type": "library",
     "require": {
         "voceconnect/voce-post-meta": "~1.4",
-        "wpackagist/multiple-post-thumbnails": "~1.6"
+        "wpackagist/multiple-post-thumbnails": "~1.6",
+        "voceconnect/wp-dependencies": "~0.1"
     },
     "autoload": {
         "files": ["wp-twitter-cards.php"]

@@ -15,6 +15,8 @@ class WP_Twitter_Cards {
 	static $post_types = array();
 
 	public static function init(){
+		do_action( 'wp_load_dependency', 'multiple-post-thumbnails', 'multi-post-thumbnails.php' );
+
 		if ( !class_exists( 'Voce_Meta_API' ) )
 			return _doing_it_wrong( __FUNCTION__, 'The Voce Post Meta plugin must be active for the Twitter Card integration to work correctly.', '' );
 		if ( !class_exists( 'MultiPostThumbnails' ) )
