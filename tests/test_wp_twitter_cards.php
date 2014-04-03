@@ -2,13 +2,6 @@
 
 class WP_Twitter_cards_Tests extends WP_UnitTestCase {
 
-    /**
-     * Ensure that WP_Dependency_Loader is loaded
-     */ 
-
-    function test_wp_dependency_loader_loaded(){
-        $this->assertTrue( class_exists( 'WP_Dependency_Loader' ) );
-    }
 
     /**
      * Ensure that MultiPostThumbnails is loaded
@@ -35,6 +28,23 @@ class WP_Twitter_cards_Tests extends WP_UnitTestCase {
     }
 
     /**
+     * Ensure that the metabox is loaded
+     *
+     * @global array $wp_meta_boxes
+     */
+
+    function test_meta_box_loaded(){
+        set_current_screen( 'post' );
+        global $wp_meta_boxes;
+        if (  is_array( $wp_meta_boxes ) ) {
+            $this->assertArrayHasKey( 'page_twitter_card', $wp_meta_boxes['page']['normal']['default'] );
+        } else {
+            $this->fail( '$wp_meta_boxes is not an array' );
+        }
+    }
+
+
+    /**
      * Ensure that main hooks are set for "manage_options" (administrator) users
      *
      * NOTE: after this test, the hooks will be set!
@@ -58,20 +68,5 @@ class WP_Twitter_cards_Tests extends WP_UnitTestCase {
         }
     }
 
-    /**
-     * Ensure that the metabox is loaded
-     *
-     * @global array $wp_meta_boxes
-     */
-
-    function test_meta_box_loaded(){
-        global $wp_meta_boxes;
-        WP_Twitter_Cards::add_post_type( 'post' );
-        set_current_screen( 'post-edit.php' );
-        if ( is_array ( $wp_meta_boxes ) ) {
-            $this->assertArrayHasKey( 'page_twitter_card', $wp_meta_boxes['page']['normal']['default'] );
-        } else {
-            $this->fail( '$wp_meta_boxes is not an array' );
-        }
-    }
+    
 } 
