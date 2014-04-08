@@ -1,31 +1,31 @@
 {
-    "name": "voceconnect/wp-twitter-cards",
-    "description": "Helper class to generate meta tags for twitter card support. When support is added to a post type, a meta box is added on the post edit view to configure the twitter card properties.",
-    "keywords": ["wordpress", "twitter", "cards", "meta", "helper"],
-    "license": "GPLv2+",
-    "authors": [
-        {
-            "name": "Kevin Langley Jr",
-            "email": "klangley@voceconnect.com"
-        }
-    ],
-	"repositories": [
-	        {
-	            "type": "composer",
-	            "url" : "http://wp-plugins.packagist.voceconnect.com/"
-	        },
-	        {
-	            "type": "composer",
-	            "url" : "http://packagist.voceconnect.com"
-	        }
+	"name": "voceconnect/wp-twitter-cards",
+	"description": "Helper class to generate meta tags for twitter card support. When support is added to a post type, a meta box is added on the post edit view to configure the twitter card properties.",
+	"keywords": ["wordpress", "twitter", "cards", "meta", "helper"],
+	"license": "GPLv2+",
+	"authors": [
+		{
+			"name": "Kevin Langley Jr",
+			"email": "klangley@voceconnect.com"
+		}
 	],
-    "type": "library",
-    "require": {
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "http://wp-plugins.packagist.voceconnect.com/"
+		},
+		{
+			"type": "composer",
+			"url": "http://packagist.voceconnect.com"
+		}
+	],
+	"type": "library",
+	"require": {
 		"voceconnect/wp-dependencies": "~0.1",
-        "voceconnect/voce-post-meta": "~1.4",
-        "wpackagist/multiple-post-thumbnails": "~1.6"
-    },
-    "autoload": {
-        "files": ["wp-twitter-cards.php"]
-    }
+		"voceconnect/voce-post-meta": "~1.4",
+		"wpackagist/multiple-post-thumbnails": "~1.6"
+	},
+	"autoload": {
+		"files": ["wp-twitter-cards.php"]
+	}
 }
