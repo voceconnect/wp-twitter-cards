@@ -256,4 +256,5 @@ class WP_Twitter_Cards {
 }
 add_action( 'init', array( 'WP_Twitter_Cards', 'init' ), 99 );
 
+do_action( 'wp_load_dependency', 'multiple-post-thumbnails', 'multi-post-thumbnails.php' );
 }
