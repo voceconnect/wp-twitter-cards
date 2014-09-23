@@ -9,7 +9,8 @@ class WP_Twitter_Cards {
 		'photo' => 'Photo',
 		'summary_large_image' => 'Summary Large Image',
 		'summary' => 'Summary',
-		'product' => 'Product'
+		'product' => 'Product',
+		'player' => 'Player'
 	);
 
 	static $post_types = array();
@@ -37,11 +38,14 @@ class WP_Twitter_Cards {
 
 	private static function add_post_meta() {
 		foreach( self::$post_types as $post_type => $card_types ){
-			add_post_type_support( $post_type, $post_type . '_twitter_card' );
+			$group = $post_type . '_twitter_card';
+			$card_type_keys = array_keys($card_types);
 
-			add_metadata_group( $post_type . '_twitter_card', 'Twitter Card' );
+			add_post_type_support( $post_type, $group );
 
-			add_metadata_field( $post_type . '_twitter_card', 'twitter_card_type', 'Card Type', 'dropdown', array(
+			add_metadata_group( $group, 'Twitter Card' );
+
+			add_metadata_field( $group, 'twitter_card_type', 'Card Type', 'dropdown', array(
 				'options' => array_merge(
 					array( '' => 'None' ),
 					$card_types
@@ -49,59 +53,54 @@ class WP_Twitter_Cards {
 			) );
 
 			if( !apply_filters( 'twitter_card_title_setting_disabled', false ) ){
-				add_metadata_field( $post_type . '_twitter_card', 'twitter_card_title', 'Card Title' );
+				add_metadata_field( $group, 'twitter_card_title', 'Card Title' );
 			}
 
 			if( !apply_filters( 'twitter_card_description_setting_disabled', false ) ){
-				add_metadata_field( $post_type . '_twitter_card', 'twitter_card_description', 'Card Description', 'textarea' );
+				add_metadata_field( $group, 'twitter_card_description', 'Card Description', 'textarea' );
 			}
 
-			if( count( array_intersect( array( 'gallery', 'summary_large_image', 'product' ), array_keys( $card_types ) ) ) ){
-				if ( !class_exists( 'MultiPostThumbnails' ) )
-					return _doing_it_wrong( __FUNCTION__, 'The Multi Post Thumbnails plugin must be active for some twitter card types to work correctly.', '' );
+			if( in_array( 'gallery', $card_type_keys ) ){
 
-				if( in_array( 'gallery', array_keys( $card_types ) ) ){
-
-					for($i=1; $i <= 4; $i++){
-						new MultiPostThumbnails( array(
-							'label' => 'Twitter Card - Gallery Image #' . $i,
-							'id' => 'twitter-card-gallery-image-' . $i,
-							'post_type' => $post_type
-						) );
-					}
-				}
-
-				if( in_array( 'summary_large_image', array_keys( $card_types ) ) ){
-
+				for($i=1; $i <= 4; $i++){
 					new MultiPostThumbnails( array(
-						'label' => 'Twitter Card - Large Image',
-						'id' => 'twitter-card-large-image',
+						'label' => 'Twitter Card - Gallery Image #' . $i,
+						'id' => 'twitter-card-gallery-image-' . $i,
 						'post_type' => $post_type
 					) );
 				}
+			}
 
-				if( in_array( 'product', array_keys( $card_types ) ) ){
+			if( in_array( 'summary_large_image', $card_type_keys ) ){
 
-					add_metadata_field( $post_type . '_twitter_card', 'twitter_card_label1', 'Card Label 1', 'text', array(
-						'description' => 'ex. Price'
-					) );
-					add_metadata_field( $post_type . '_twitter_card', 'twitter_card_data1', 'Card Data 1', 'text', array(
-						'description' => 'ex. $3.00'
-					) );
+				new MultiPostThumbnails( array(
+					'label' => 'Twitter Card - Large Image',
+					'id' => 'twitter-card-large-image',
+					'post_type' => $post_type
+				) );
+			}
 
-					add_metadata_field( $post_type . '_twitter_card', 'twitter_card_label2', 'Card Label 2', 'text', array(
-						'description' => 'ex. Color'
-					) );
-					add_metadata_field( $post_type . '_twitter_card', 'twitter_card_data2', 'Card Data 2', 'text', array(
-						'description' => 'ex. Black'
-					) );
+			if( in_array( 'product', $card_type_keys ) ){
 
-					new MultiPostThumbnails( array(
-						'label' => 'Twitter Card - Product Image',
-						'id' => 'twitter-card-product-image',
-						'post_type' => $post_type
-					) );
-				}
+				add_metadata_field( $group, 'twitter_card_label1', 'Card Label 1', 'text', array(
+					'description' => 'ex. Price'
+				) );
+				add_metadata_field( $group, 'twitter_card_data1', 'Card Data 1', 'text', array(
+					'description' => 'ex. $3.00'
+				) );
+
+				add_metadata_field( $group, 'twitter_card_label2', 'Card Label 2', 'text', array(
+					'description' => 'ex. Color'
+				) );
+				add_metadata_field( $group, 'twitter_card_data2', 'Card Data 2', 'text', array(
+					'description' => 'ex. Black'
+				) );
+
+				new MultiPostThumbnails( array(
+					'label' => 'Twitter Card - Product Image',
+					'id' => 'twitter-card-product-image',
+					'post_type' => $post_type
+				) );
 			}
 		}
 	}
