@@ -20,8 +20,6 @@ class WP_Twitter_Cards {
 		if ( !class_exists( 'MultiPostThumbnails' ) )
 			return _doing_it_wrong( __FUNCTION__, 'The Multi Post Thumbnails plugin must be active for the Twitter Card integration to work correctly.', '' );
 
-
-		add_action( 'add_meta_boxes', array( __CLASS__, 'add_meta_boxes' ), 11, 2 );
 		add_action( 'wp_head', array( __CLASS__, 'render_card_meta' ) );
 		add_action( 'admin_enqueue_scripts', function( $hook ) {
 			if ( in_array( $hook, array('post-new.php', 'post.php') ) )
@@ -33,17 +31,16 @@ class WP_Twitter_Cards {
 
 			add_metadata_group( $post_type . '_twitter_card', 'Twitter Card' );
 
-
-			if( !apply_filters( 'twitter_card_title_setting_disabled', false ) ){
-				add_metadata_field( $post_type . '_twitter_card', 'twitter_card_title', 'Card Title' );
-			}
-
 			add_metadata_field( $post_type . '_twitter_card', 'twitter_card_type', 'Card Type', 'dropdown', array(
 				'options' => array_merge(
 					array( '' => 'None' ),
 					$card_types
 				)
 			) );
+
+			if( !apply_filters( 'twitter_card_title_setting_disabled', false ) ){
+				add_metadata_field( $post_type . '_twitter_card', 'twitter_card_title', 'Card Title' );
+			}
 
 			if( !apply_filters( 'twitter_card_description_setting_disabled', false ) ){
 				add_metadata_field( $post_type . '_twitter_card', 'twitter_card_description', 'Card Description', 'textarea' );
@@ -133,41 +130,6 @@ class WP_Twitter_Cards {
 		$description_setting_val = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_description' );
 		$description = ( has_excerpt() ) ? get_the_excerpt() : wp_trim_words( strip_shortcodes( strip_tags( get_post( get_queried_object_id() )->post_content ) ), 40, '...' );
 		return apply_filters( 'twitter_card_description_setting_disabled', false ) ? $description : ( !empty( $description_setting_val ) ? $description_setting_val : $description );
-	}
-
-	/**
-	 * Action to remove meta fields and meta boxes based on the Twitter Card type
-	 * Only show fields that are relevent to the currently selected type.
-	 * @param string $post_type
-	 * @param WP_Post $post
-	 */
-	static function add_meta_boxes($post_type, $post){
-		if( !post_type_supports( $post_type, $post_type . '_twitter_card' ) )
-			return;
-
-		$card_type = Voce_Meta_API::GetInstance()->get_meta_value( $post->ID, $post_type . '_twitter_card', 'twitter_card_type' );
-
-		// foreach( array( 'normal', 'advanced', 'side' ) as $context ){
-		// 	if( $card_type != 'gallery' ){
-		// 		for($i=1; $i <= 4; $i++)
-		// 			remove_meta_box( sprintf( '%s-twitter-card-gallery-image-%d', $post_type, $i ), $post_type, $context );
-		// 	}
-		// 	if( $card_type != 'summary_large_image' ){
-		// 		remove_meta_box( sprintf( '%s-twitter-card-large-image', $post_type ), $post_type, $context );
-		// 	}
-		// 	if( $card_type != 'product' ){
-		// 		remove_meta_box( sprintf( '%s-twitter-card-product-image', $post_type ), $post_type, $context );
-		// 		for( $i=1; $i<=2; $i++ ){
-		// 			remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_label' . $i );
-		// 			remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_data' . $i );
-		// 		}
-		// 	}
-		// 	if( $card_type == 'none' ){
-		// 		remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_title' );
-		// 		remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_description' );
-		// 	}
-		// }
-
 	}
 
 	/**
