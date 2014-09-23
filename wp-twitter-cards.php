@@ -23,6 +23,10 @@ class WP_Twitter_Cards {
 
 		add_action( 'add_meta_boxes', array( __CLASS__, 'add_meta_boxes' ), 11, 2 );
 		add_action( 'wp_head', array( __CLASS__, 'render_card_meta' ) );
+		add_action( 'admin_enqueue_scripts', function( $hook ) {
+			if ( in_array( $hook, array('post-new.php', 'post.php') ) )
+				wp_enqueue_script( 'twitter-card-metabox', plugins_url( '/metabox.js', __FILE__ ), array( 'jquery' ) );
+		} );
 
 		foreach( self::$post_types as $post_type => $card_types ){
 			add_post_type_support( $post_type, $post_type . '_twitter_card' );
@@ -143,26 +147,26 @@ class WP_Twitter_Cards {
 
 		$card_type = Voce_Meta_API::GetInstance()->get_meta_value( $post->ID, $post_type . '_twitter_card', 'twitter_card_type' );
 
-		foreach( array( 'normal', 'advanced', 'side' ) as $context ){
-			if( $card_type != 'gallery' ){
-				for($i=1; $i <= 4; $i++)
-					remove_meta_box( sprintf( '%s-twitter-card-gallery-image-%d', $post_type, $i ), $post_type, $context );
-			}
-			if( $card_type != 'summary_large_image' ){
-				remove_meta_box( sprintf( '%s-twitter-card-large-image', $post_type ), $post_type, $context );
-			}
-			if( $card_type != 'product' ){
-				remove_meta_box( sprintf( '%s-twitter-card-product-image', $post_type ), $post_type, $context );
-				for( $i=1; $i<=2; $i++ ){
-					remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_label' . $i );
-					remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_data' . $i );
-				}
-			}
-			if( $card_type == 'none' ){
-				remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_title' );
-				remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_description' );
-			}
-		}
+		// foreach( array( 'normal', 'advanced', 'side' ) as $context ){
+		// 	if( $card_type != 'gallery' ){
+		// 		for($i=1; $i <= 4; $i++)
+		// 			remove_meta_box( sprintf( '%s-twitter-card-gallery-image-%d', $post_type, $i ), $post_type, $context );
+		// 	}
+		// 	if( $card_type != 'summary_large_image' ){
+		// 		remove_meta_box( sprintf( '%s-twitter-card-large-image', $post_type ), $post_type, $context );
+		// 	}
+		// 	if( $card_type != 'product' ){
+		// 		remove_meta_box( sprintf( '%s-twitter-card-product-image', $post_type ), $post_type, $context );
+		// 		for( $i=1; $i<=2; $i++ ){
+		// 			remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_label' . $i );
+		// 			remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_data' . $i );
+		// 		}
+		// 	}
+		// 	if( $card_type == 'none' ){
+		// 		remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_title' );
+		// 		remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_description' );
+		// 	}
+		// }
 
 	}
 
