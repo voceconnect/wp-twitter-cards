@@ -27,8 +27,12 @@ class WP_Twitter_Cards {
 	}
 
 	public static function admin_enqueue_scripts( $hook ) {
-		if ( in_array( $hook, array('post-new.php', 'post.php') ) )
+		if ( in_array( $hook, array('post-new.php', 'post.php') ) ) {
 			wp_enqueue_script( 'twitter-card-metabox', plugins_url( '/metabox.js', __FILE__ ), array( 'jquery' ) );
+			wp_localize_script( 'twitter-card-metabox', 'twitterCardOptions', array(
+				'postType' => get_post_type()
+			) );
+		}
 	}
 
 	private static function add_post_meta() {

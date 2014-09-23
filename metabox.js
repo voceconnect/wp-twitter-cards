@@ -1,26 +1,28 @@
 ;(function ( $, window, document, undefined ) {
 	$(document).ready( function() {
 
-		var $typeSelect, basicFields, productFields, galleryFields, summaryFields, hideFields, hideStuff, showEverything;
+		var $typeSelect, basicFields, productFields, galleryFields, summaryFields, hideFields, hideStuff, showEverything, postType;
 
-		$typeSelect = $('#post_twitter_card_twitter_card_type');
+		postType = twitterCardOptions.postType;
 
-		summaryFields = [ $('#post-twitter-card-large-image') ];
+		$typeSelect = $('#' + postType + '_twitter_card_twitter_card_type');
+
+		summaryFields = [ $('#' + postType + '-twitter-card-large-image') ];
 
 		basicFields = [
-			$('#post_twitter_card_twitter_card_title').parent(),
-			$('#post_twitter_card_twitter_card_description').parent()
+			$('#' + postType + '_twitter_card_twitter_card_title').parent(),
+			$('#' + postType + '_twitter_card_twitter_card_description').parent()
 		];
 
-		productFields = [ $('#post-twitter-card-product-image') ];
+		productFields = [ $('#' + postType + '-twitter-card-product-image') ];
 		for ( var i = 1; i <= 2; i++ ) {
-			productFields.push( $('#post_twitter_card_twitter_card_label'+i).parent() );
-			productFields.push( $('#post_twitter_card_twitter_card_data'+i).parent() );
+			productFields.push( $('#' + postType + '_twitter_card_twitter_card_label'+i).parent() );
+			productFields.push( $('#' + postType + '_twitter_card_twitter_card_data'+i).parent() );
 		}
 
 		galleryFields = [];
 		for ( var i = 1; i <= 4; i++ ) {
-			galleryFields.push( $('#post-twitter-card-gallery-image-'+i) );
+			galleryFields.push( $('#' + postType + '-twitter-card-gallery-image-'+i) );
 		}
 
 		hideFields = function( fields ) {
