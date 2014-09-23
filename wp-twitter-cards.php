@@ -21,11 +21,17 @@ class WP_Twitter_Cards {
 			return _doing_it_wrong( __FUNCTION__, 'The Multi Post Thumbnails plugin must be active for the Twitter Card integration to work correctly.', '' );
 
 		add_action( 'wp_head', array( __CLASS__, 'render_card_meta' ) );
-		add_action( 'admin_enqueue_scripts', function( $hook ) {
-			if ( in_array( $hook, array('post-new.php', 'post.php') ) )
-				wp_enqueue_script( 'twitter-card-metabox', plugins_url( '/metabox.js', __FILE__ ), array( 'jquery' ) );
-		} );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts' ) );
 
+		self::add_post_meta();
+	}
+
+	public static function admin_enqueue_scripts( $hook ) {
+		if ( in_array( $hook, array('post-new.php', 'post.php') ) )
+			wp_enqueue_script( 'twitter-card-metabox', plugins_url( '/metabox.js', __FILE__ ), array( 'jquery' ) );
+	}
+
+	private static function add_post_meta() {
 		foreach( self::$post_types as $post_type => $card_types ){
 			add_post_type_support( $post_type, $post_type . '_twitter_card' );
 
