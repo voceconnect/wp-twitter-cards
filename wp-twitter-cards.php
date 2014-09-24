@@ -182,6 +182,7 @@ class WP_Twitter_Cards {
 		if( !( $card_type = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_type' ) ) )
 			return;
 
+		$vpm_group = get_post_type() . '_twitter_card';
 		$card_data = array(
 			'card' => $card_type,
 			'title' => self::get_the_title(),
@@ -212,10 +213,10 @@ class WP_Twitter_Cards {
 				if( MultiPostThumbnails::has_post_thumbnail( get_post_type(), 'twitter-card-product-image', get_queried_object_id() ) )
 					$card_data['image'] = MultiPostThumbnails::get_post_thumbnail_url( get_post_type(), 'twitter-card-product-image', get_queried_object_id(), 'large' );
 
-				$card_data['data1'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_data1' );
-				$card_data['label1'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_label1' );
-				$card_data['data2'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_data2' );
-				$card_data['label2'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_label2' );
+				$card_data['data1'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), $vpm_group, 'twitter_card_data1' );
+				$card_data['label1'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), $vpm_group, 'twitter_card_label1' );
+				$card_data['data2'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), $vpm_group, 'twitter_card_data2' );
+				$card_data['label2'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), $vpm_group, 'twitter_card_label2' );
 			break;
 			case 'photo':
 			case 'summary':
@@ -231,11 +232,11 @@ class WP_Twitter_Cards {
 				if( MultiPostThumbnails::has_post_thumbnail( get_post_type(), 'twitter-card-player-image', get_queried_object_id() ) )
 					$card_data['image'] = MultiPostThumbnails::get_post_thumbnail_url( get_post_type(), 'twitter-card-player-image', get_queried_object_id(), 'large' );
 
-				$card_data['player'] = get_vpm_value( get_post_type() . '_twitter_card', 'twitter_card_player_url', get_queried_object_id() );
-				$card_data['player:width'] = get_vpm_value( get_post_type() . '_twitter_card', 'twitter_card_player_width', get_queried_object_id() );
-				$card_data['player:height'] = get_vpm_value( get_post_type() . '_twitter_card', 'twitter_card_player_height', get_queried_object_id() );
-				$card_data['player:stream'] = get_vpm_value( get_post_type() . '_twitter_card', 'twitter_card_player_stream', get_queried_object_id() );
-				$card_data['player:stream:content_type'] = get_vpm_value( get_post_type() . '_twitter_card', 'twitter_card_stream_content_type', get_queried_object_id() );
+				$card_data['player'] = get_vpm_value( $vpm_group, 'twitter_card_player_url', get_queried_object_id() );
+				$card_data['player:width'] = get_vpm_value( $vpm_group, 'twitter_card_player_width', get_queried_object_id() );
+				$card_data['player:height'] = get_vpm_value( $vpm_group, 'twitter_card_player_height', get_queried_object_id() );
+				$card_data['player:stream'] = get_vpm_value( $vpm_group, 'twitter_card_player_stream', get_queried_object_id() );
+				$card_data['player:stream:content_type'] = get_vpm_value( $vpm_group, 'twitter_card_stream_content_type', get_queried_object_id() );
 
 			break;
 		}
