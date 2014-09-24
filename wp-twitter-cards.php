@@ -105,23 +105,26 @@ class WP_Twitter_Cards {
 
 			if ( in_array( 'player', $card_type_keys ) ) {
 				add_metadata_field( $group, 'twitter_card_player_url', 'Player URL', 'text', array(
-					'description' => 'URL to iframe player. This must be a HTTPS URL.',
+					'description' => 'URL to iframe player. This must be a HTTPS URL. Required for player card to work.',
 					'sanitize_callbacks' => array( function($field, $old_value, $new_value, $post_id) {
 						return esc_url_raw( $new_value, array('https') );
 					} )
 				) );
 				add_metadata_field( $group, 'twitter_card_player_width', 'Player Width', 'numeric', array(
-					'description' => 'Width of iframe specified in player field (pixels).'
+					'description' => 'Width of iframe specified in player field in pixels. Required for player card to work.'
 				) );
 				add_metadata_field( $group, 'twitter_card_player_height', 'Player Height', 'numeric', array(
-					'description' => 'Height of iframe specified in player field (pixels).'
+					'description' => 'Height of iframe specified in player field in pixels. Required for player card to work.'
 				) );
 				add_metadata_field( $group, 'twitter_card_player_stream', 'Player Stream', 'text', array(
+					'description' => 'Optional URL to raw stream. If provided, the stream must be delivered in the MPEG-4 container format',
 					'sanitize_callbacks' => array( function($field, $old_value, $new_value, $post_id) {
 						return esc_url_raw( $new_value );
 					} )
 				) );
-				add_metadata_field( $group, 'twitter_card_stream_content_type', 'Stream Content Type', 'text' );
+				add_metadata_field( $group, 'twitter_card_stream_content_type', 'Stream Content Type', 'text', array(
+					'description' => 'The MIME type/subtype combination that describes the content contained in the stream field. Required if stream is set.'
+				) );
 
 				new MultiPostThumbnails( array(
 					'label' => 'Twitter Card - Player Image',
