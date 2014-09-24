@@ -102,6 +102,14 @@ class WP_Twitter_Cards {
 					'post_type' => $post_type
 				) );
 			}
+
+			if ( in_array( 'player', $card_type_keys ) ) {
+				add_metadata_field( $group, 'twitter_card_player_url', 'Player URL' );
+				add_metadata_field( $group, 'twitter_card_player_width', 'Player Width' );
+				add_metadata_field( $group, 'twitter_card_player_height', 'Player Height' );
+				add_metadata_field( $group, 'twitter_card_player_stream', 'Player Stream' );
+				add_metadata_field( $group, 'twitter_card_stream_content_type', 'Stream Content Type' );
+			}
 		}
 	}
 

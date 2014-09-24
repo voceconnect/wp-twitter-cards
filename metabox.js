@@ -1,7 +1,7 @@
 ;(function ( $, window, document, undefined ) {
 	$(document).ready( function() {
 
-		var $typeSelect, basicFields, productFields, galleryFields, summaryFields, hideFields, hideStuff, showEverything, postType;
+		var $typeSelect, basicFields, productFields, galleryFields, summaryFields, playerFields, hideFields, hideStuff, showEverything, postType;
 
 		postType = twitterCardOptions.postType;
 
@@ -12,6 +12,14 @@
 		basicFields = [
 			$('#' + postType + '_twitter_card_twitter_card_title').parent(),
 			$('#' + postType + '_twitter_card_twitter_card_description').parent()
+		];
+
+		playerFields = [
+			$('#' + postType + '_twitter_card_twitter_card_player_url').parent(),
+			$('#' + postType + '_twitter_card_twitter_card_player_width').parent(),
+			$('#' + postType + '_twitter_card_twitter_card_player_height').parent(),
+			$('#' + postType + '_twitter_card_twitter_card_player_stream').parent(),
+			$('#' + postType + '_twitter_card_twitter_card_stream_content_type').parent()
 		];
 
 		productFields = [ $('#' + postType + '-twitter-card-product-image') ];
@@ -42,6 +50,7 @@
 			hideFields(summaryFields);
 			hideFields(basicFields);
 			hideFields(productFields);
+			hideFields(playerFields);
 		}
 
 		showByType = function () {
@@ -58,6 +67,9 @@
 			}
 			if ( cardType === 'product' ) {
 				showFields(productFields);
+			}
+			if ( cardType === 'player' ) {
+				showFields(playerFields);
 			}
 		}
 
