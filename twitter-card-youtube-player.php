@@ -39,10 +39,11 @@ class Twitter_Card_Youtube_Player {
 			$html = $this->data->html;
 			$pattern = '/src="(.*?)"/';
 			$matches = array();
-			preg_match_all( $pattern, $html, $matches);
-			if ( !empty($matches[1][0]) )
+			$preg = preg_match_all( $pattern, $html, $matches);
+			if ( if $preg !== false && !empty($matches[1][0]) ) {
 				$url = str_replace('http:', 'https:', $matches[1][0]);
 				return $url;
+			}
 		}
 		return false;
 	}
