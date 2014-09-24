@@ -40,7 +40,7 @@ class Twitter_Card_Youtube_Player {
 			$pattern = '/src="(.*?)"/';
 			$matches = array();
 			$preg = preg_match_all( $pattern, $html, $matches);
-			if ( if $preg !== false && !empty($matches[1][0]) ) {
+			if ( $preg !== false && !empty($matches[1][0]) ) {
 				$url = str_replace('http:', 'https:', $matches[1][0]);
 				return $url;
 			}
