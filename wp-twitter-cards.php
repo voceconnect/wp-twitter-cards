@@ -109,6 +109,12 @@ class WP_Twitter_Cards {
 				add_metadata_field( $group, 'twitter_card_player_height', 'Player Height' );
 				add_metadata_field( $group, 'twitter_card_player_stream', 'Player Stream' );
 				add_metadata_field( $group, 'twitter_card_stream_content_type', 'Stream Content Type' );
+
+				new MultiPostThumbnails( array(
+					'label' => 'Twitter Card - Player Image',
+					'id' => 'twitter-card-player-image',
+					'post_type' => $post_type
+				) );
 			}
 		}
 	}
@@ -203,6 +209,17 @@ class WP_Twitter_Cards {
 					if( $image )
 						$card_data['image'] = $image[0];
 				}
+
+			break;
+			case 'player':
+				if( MultiPostThumbnails::has_post_thumbnail( get_post_type(), 'twitter-card-player-image', get_queried_object_id() ) )
+					$card_data['image'] = MultiPostThumbnails::get_post_thumbnail_url( get_post_type(), 'twitter-card-player-image', get_queried_object_id(), 'large' );
+
+				$card_data['player'] = get_vpm_value( get_post_type() . '_twitter_card', 'twitter_card_player_url', get_queried_object_id() );
+				$card_data['player:width'] = get_vpm_value( get_post_type() . '_twitter_card', 'twitter_card_player_width', get_queried_object_id() );
+				$card_data['player:height'] = get_vpm_value( get_post_type() . '_twitter_card', 'twitter_card_player_height', get_queried_object_id() );
+				$card_data['player:stream'] = get_vpm_value( get_post_type() . '_twitter_card', 'twitter_card_player_stream', get_queried_object_id() );
+				$card_data['player:stream:content_type'] = get_vpm_value( get_post_type() . '_twitter_card', 'twitter_card_stream_content_type', get_queried_object_id() );
 
 			break;
 		}
