@@ -156,7 +156,7 @@ class WP_Twitter_Cards {
 	 * @return string
 	 */
 	static function get_the_title(){
-		$title_setting_val = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_title' );
+		$title_setting_val = get_vpm_value( get_post_type() . '_twitter_card', 'twitter_card_title', get_queried_object_id() );
 		return apply_filters( 'twitter_card_title_setting_disabled', false ) ? get_the_title() : ( !empty( $title_setting_val ) ? $title_setting_val : get_the_title() );
 	}
 
@@ -166,7 +166,7 @@ class WP_Twitter_Cards {
 	 * @return string
 	 */
 	static function get_the_description(){
-		$description_setting_val = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_description' );
+		$description_setting_val = get_vpm_value( get_post_type() . '_twitter_card', 'twitter_card_description', get_queried_object_id() );
 		$description = ( has_excerpt() ) ? get_the_excerpt() : wp_trim_words( strip_shortcodes( strip_tags( get_post( get_queried_object_id() )->post_content ) ), 40, '...' );
 		return apply_filters( 'twitter_card_description_setting_disabled', false ) ? $description : ( !empty( $description_setting_val ) ? $description_setting_val : $description );
 	}
@@ -179,7 +179,7 @@ class WP_Twitter_Cards {
 		if( !is_singular( array_keys( self::$post_types ) ) )
 			return;
 
-		if( !( $card_type = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_type' ) ) )
+		if( !( $card_type = get_vpm_value( get_post_type() . '_twitter_card', 'twitter_card_type', get_queried_object_id() ) ) )
 			return;
 
 		$vpm_group = get_post_type() . '_twitter_card';
@@ -213,10 +213,10 @@ class WP_Twitter_Cards {
 				if( MultiPostThumbnails::has_post_thumbnail( get_post_type(), 'twitter-card-product-image', get_queried_object_id() ) )
 					$card_data['image'] = MultiPostThumbnails::get_post_thumbnail_url( get_post_type(), 'twitter-card-product-image', get_queried_object_id(), 'large' );
 
-				$card_data['data1'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), $vpm_group, 'twitter_card_data1' );
-				$card_data['label1'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), $vpm_group, 'twitter_card_label1' );
-				$card_data['data2'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), $vpm_group, 'twitter_card_data2' );
-				$card_data['label2'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), $vpm_group, 'twitter_card_label2' );
+				$card_data['data1'] = get_vpm_value( $vpm_group, 'twitter_card_data1', get_queried_object_id() );
+				$card_data['label1'] = get_vpm_value( $vpm_group, 'twitter_card_label1', get_queried_object_id() );
+				$card_data['data2'] = get_vpm_value( $vpm_group, 'twitter_card_data2', get_queried_object_id() );
+				$card_data['label2'] = get_vpm_value( $vpm_group, 'twitter_card_label2', get_queried_object_id() );
 			break;
 			case 'photo':
 			case 'summary':
