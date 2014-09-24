@@ -104,10 +104,19 @@ class WP_Twitter_Cards {
 			}
 
 			if ( in_array( 'player', $card_type_keys ) ) {
-				add_metadata_field( $group, 'twitter_card_player_url', 'Player URL', 'text' );
+				add_metadata_field( $group, 'twitter_card_player_url', 'Player URL', 'text', array(
+					'description' => 'URL to iframe player. This must be a HTTPS URL.',
+					'sanitize_callbacks' => array( function($field, $old_value, $new_value, $post_id) {
+						return esc_url_raw( $new_value, array('https') );
+					} )
+				) );
 				add_metadata_field( $group, 'twitter_card_player_width', 'Player Width', 'numeric' );
 				add_metadata_field( $group, 'twitter_card_player_height', 'Player Height', 'numeric' );
-				add_metadata_field( $group, 'twitter_card_player_stream', 'Player Stream', 'text' );
+				add_metadata_field( $group, 'twitter_card_player_stream', 'Player Stream', 'text', array(
+					'sanitize_callbacks' => array( function($field, $old_value, $new_value, $post_id) {
+						return esc_url_raw( $new_value );
+					} )
+				) );
 				add_metadata_field( $group, 'twitter_card_stream_content_type', 'Stream Content Type', 'text' );
 
 				new MultiPostThumbnails( array(
