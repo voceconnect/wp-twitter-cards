@@ -179,10 +179,11 @@ class WP_Twitter_Cards {
 		if( !is_singular( array_keys( self::$post_types ) ) )
 			return;
 
-		if( !( $card_type = get_vpm_value( get_post_type() . '_twitter_card', 'twitter_card_type', get_queried_object_id() ) ) )
+		$vpm_group = get_post_type() . '_twitter_card';
+
+		if( !( $card_type = get_vpm_value( $vpm_group, 'twitter_card_type', get_queried_object_id() ) ) )
 			return;
 
-		$vpm_group = get_post_type() . '_twitter_card';
 		$card_data = array(
 			'card' => $card_type,
 			'title' => self::get_the_title(),
