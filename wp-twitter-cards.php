@@ -105,16 +105,16 @@ class WP_Twitter_Cards {
 
 			if ( in_array( 'player', $card_type_keys ) ) {
 				add_metadata_field( $group, 'twitter_card_player_url', 'Player URL', 'text', array(
-					'description' => 'URL to iframe player. This must be a HTTPS URL. Required for player card to work.',
+					'description' => 'URL to iframe player. This must be a HTTPS URL.',
 					'sanitize_callbacks' => array( function($field, $old_value, $new_value, $post_id) {
 						return esc_url_raw( $new_value, array('https') );
 					} )
 				) );
 				add_metadata_field( $group, 'twitter_card_player_width', 'Player Width', 'numeric', array(
-					'description' => 'Width of iframe specified in player field in pixels. Required for player card to work.'
+					'description' => 'Width of iframe specified in player field in pixels.'
 				) );
 				add_metadata_field( $group, 'twitter_card_player_height', 'Player Height', 'numeric', array(
-					'description' => 'Height of iframe specified in player field in pixels. Required for player card to work.'
+					'description' => 'Height of iframe specified in player field in pixels.'
 				) );
 				add_metadata_field( $group, 'twitter_card_player_stream', 'Player Stream', 'text', array(
 					'description' => 'Optional URL to raw stream. If provided, the stream must be delivered in the MPEG-4 container format',
