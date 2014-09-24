@@ -66,6 +66,3 @@ class Twitter_Card_Youtube_Player {
 	}
 
 }
-$youtube = new Twitter_Card_Youtube_Player('https://www.youtube.com/watch?v=Amyc7EJpMf4');
-var_dump( $youtube->get_player_url() );
-die;
