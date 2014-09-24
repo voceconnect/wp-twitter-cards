@@ -25,25 +25,27 @@ class WP_Twitter_Cards {
 
 		add_action( 'wp_head', array( __CLASS__, 'render_card_meta' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts' ) );
-		add_filter( 'meta_type_mapping', function( $mapping ) {
-			$mapping['non_editable'] = array(
-				'class' => 'Voce_Meta_Field',
-				'args' => array(
-					'display_callbacks' => array( function( $field, $value, $post_id ) {
-						echo '<p>';
-						voce_field_label_display( $field );
-						printf( '<span id="%s">%s</span>', esc_attr( $field->get_input_id() ), $value );
-						echo '</p>';
-					} ),
-					'sanitize_callbacks' => array( function( $field, $old_value, $new_value, $post_id ) {
-						return $old_value;
-					} )
-				)
-			);
-			return $mapping;
-		} );
+		add_filter( 'meta_type_mapping', array( __CLASS__, 'meta_field_mapping' ) );
 
 		self::add_post_meta();
+	}
+
+	public static function meta_field_mapping( $mapping ) {
+		$mapping['non_editable'] = array(
+			'class' => 'Voce_Meta_Field',
+			'args' => array(
+				'display_callbacks' => array( function( $field, $value, $post_id ) {
+					echo '<p>';
+					voce_field_label_display( $field );
+					printf( '<span id="%s">%s</span>', esc_attr( $field->get_input_id() ), $value );
+					echo '</p>';
+				} ),
+				'sanitize_callbacks' => array( function( $field, $old_value, $new_value, $post_id ) {
+					return $old_value;
+				} )
+			)
+		);
+		return $mapping;
 	}
 
 	public static function admin_enqueue_scripts( $hook ) {
