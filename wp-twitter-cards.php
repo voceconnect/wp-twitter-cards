@@ -115,7 +115,18 @@ class WP_Twitter_Cards {
 	}
 
 	public static function handle_video_url( $field, $old_value, $new_value, $post_id ) {
-
+		if ( Twitter_Card_Youtube_Player::is_valid_url($new_value) ) {
+			$youtube = new Twitter_Card_Youtube_Player( $new_value );
+			if ( $youtube instanceof Twitter_Card_Youtube_Player ) {
+				$player_data = array(
+					'url' => $youtube->get_player_url(),
+					'width' => $youtube->get_player_width(),
+					'height' => $youtube->get_player_height(),
+					'image' => $youtube->get_player_image()
+				);
+				update_post_meta( $post_id, 'twitter_card_player_data', $player_data );
+			}
+		}
 	}
 
 	/**

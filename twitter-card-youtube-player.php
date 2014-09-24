@@ -34,6 +34,31 @@ class Twitter_Card_Youtube_Player {
 		return $data;
 	}
 
+	public static function is_valid_url( $url ) {
+	   $pattern =
+			'%^# Match any youtube URL
+			(?:https?://)?  # Optional scheme. Either http or https
+			(?:www\.)?      # Optional www subdomain
+			(?:             # Group host alternatives
+			  youtu\.be/    # Either youtu.be,
+			| youtube\.com  # or youtube.com
+			  (?:           # Group path alternatives
+				/embed/     # Either /embed/
+			  | /v/         # or /v/
+			  | /watch\?v=  # or /watch\?v=
+			  )             # End path alternatives.
+			)               # End host alternatives.
+			([\w-]{10,12})  # Allow 10-12 for 11 char youtube id.
+			$%x'
+		;
+		$matches = array();
+		$preg = preg_match($pattern, $url, $matches);
+		if ( $preg !== false && !empty($matches[1]) ) {
+			return true;
+		}
+		return false;
+	}
+
 	public function get_player_url() {
 		if ( !empty($this->data->html) ) {
 			$html = $this->data->html;
