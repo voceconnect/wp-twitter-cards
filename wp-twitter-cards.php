@@ -110,8 +110,12 @@ class WP_Twitter_Cards {
 						return esc_url_raw( $new_value, array('https') );
 					} )
 				) );
-				add_metadata_field( $group, 'twitter_card_player_width', 'Player Width', 'numeric' );
-				add_metadata_field( $group, 'twitter_card_player_height', 'Player Height', 'numeric' );
+				add_metadata_field( $group, 'twitter_card_player_width', 'Player Width', 'numeric', array(
+					'description' => 'Width of iframe specified in player field (pixels).'
+				) );
+				add_metadata_field( $group, 'twitter_card_player_height', 'Player Height', 'numeric', array(
+					'description' => 'Height of iframe specified in player field (pixels).'
+				) );
 				add_metadata_field( $group, 'twitter_card_player_stream', 'Player Stream', 'text', array(
 					'sanitize_callbacks' => array( function($field, $old_value, $new_value, $post_id) {
 						return esc_url_raw( $new_value );
