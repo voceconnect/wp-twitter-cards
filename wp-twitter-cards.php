@@ -25,6 +25,23 @@ class WP_Twitter_Cards {
 
 		add_action( 'wp_head', array( __CLASS__, 'render_card_meta' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts' ) );
+		add_filter( 'meta_type_mapping', function( $mapping ) {
+			$mapping['non_editable'] = array(
+				'class' => 'Voce_Meta_Field',
+				'args' => array(
+					'display_callbacks' => array( function( $field, $value, $post_id ) {
+						echo '<p>';
+						voce_field_label_display( $field );
+						printf( '<span id="%s">%s</span>', esc_attr( $field->get_input_id() ), $value );
+						echo '</p>';
+					} ),
+					'sanitize_callbacks' => array( function( $field, $old_value, $new_value, $post_id ) {
+						return $old_value;
+					} )
+				)
+			);
+			return $mapping;
+		} );
 
 		self::add_post_meta();
 	}
@@ -110,6 +127,10 @@ class WP_Twitter_Cards {
 					'description' => 'URL of the video to display on the card.',
 					'sanitize_callbacks' => array( array( __CLASS__, 'handle_video_url' ) )
 				) );
+				add_metadata_field( $group, 'twitter_card_player_url', 'Player URL', 'non_editable' );
+				add_metadata_field( $group, 'twitter_card_player_width', 'Player Width', 'non_editable' );
+				add_metadata_field( $group, 'twitter_card_player_height', 'Player Height', 'non_editable' );
+				add_metadata_field( $group, 'twitter_card_player_image', 'Player Image', 'non_editable' );
 			}
 		}
 	}
@@ -124,9 +145,11 @@ class WP_Twitter_Cards {
 					'height' => $youtube->get_player_height(),
 					'image' => $youtube->get_player_image()
 				);
-				update_post_meta( $post_id, 'twitter_card_player_data', $player_data );
+				foreach ( $player_data as $key => $value )
+					update_post_meta( $post_id, get_post_type() . '_twitter_card_twitter_card_player_' . $key, $value );
 			}
 		}
+		return $new_value;
 	}
 
 	/**
