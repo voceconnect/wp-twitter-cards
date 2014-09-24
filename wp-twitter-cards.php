@@ -150,6 +150,9 @@ class WP_Twitter_Cards {
 				foreach ( $player_data as $key => $value )
 					update_post_meta( $post_id, get_post_type() . '_twitter_card_twitter_card_player_' . $key, $value );
 			}
+		} else {
+			foreach ( array( 'url', 'width', 'height', 'image' ) as $key )
+					delete_post_meta( $post_id, get_post_type() . '_twitter_card_twitter_card_player_' . $key );
 		}
 		return $new_value;
 	}
