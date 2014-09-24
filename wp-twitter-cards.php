@@ -2,6 +2,8 @@
 
 if ( !class_exists( 'WP_Twitter_Cards' ) ){
 
+require __DIR__ . '/twitter-card-youtube-player.php';
+
 class WP_Twitter_Cards {
 
 	static $card_types = array(
