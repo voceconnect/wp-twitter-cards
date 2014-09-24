@@ -243,6 +243,13 @@ class WP_Twitter_Cards {
 				if( !isset( $card_data[$required] ) || empty( $card_data[$required] ) )
 					return;
 			}
+		} else if ( $card_type == 'player' ) {
+			foreach ( array( 'title', 'description', 'image', 'player', 'player:width', 'player:height' ) as $required ) {
+				if( !isset( $card_data[$required] ) || empty( $card_data[$required] ) )
+					return;
+			}
+			if ( !empty($card_data['player:stream']) && empty($card_data['player:stream:content_type']) )
+				return;
 		}
 
 
