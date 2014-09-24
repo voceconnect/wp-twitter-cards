@@ -108,7 +108,7 @@ class WP_Twitter_Cards {
 			if ( in_array( 'player', $card_type_keys ) ) {
 				add_metadata_field( $group, 'twitter_card_video_url', 'Video URL', 'text', array(
 					'description' => 'URL of the video to display on the card.',
-					'sanitize_callbacks' => array( array( __CLASS__, 'handle_video_url' ) );
+					'sanitize_callbacks' => array( array( __CLASS__, 'handle_video_url' ) )
 				) );
 			}
 		}
