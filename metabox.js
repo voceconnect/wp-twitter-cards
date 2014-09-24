@@ -14,14 +14,7 @@
 			$('#' + postType + '_twitter_card_twitter_card_description').parent()
 		];
 
-		playerFields = [
-			$('#' + postType + '-twitter-card-player-image'),
-			$('#' + postType + '_twitter_card_twitter_card_player_url').parent(),
-			$('#' + postType + '_twitter_card_twitter_card_player_width').parent(),
-			$('#' + postType + '_twitter_card_twitter_card_player_height').parent(),
-			$('#' + postType + '_twitter_card_twitter_card_player_stream').parent(),
-			$('#' + postType + '_twitter_card_twitter_card_stream_content_type').parent()
-		];
+		playerFields = [ $('#' + postType + '_twitter_card_twitter_card_video_url').parent() ];
 
 		productFields = [ $('#' + postType + '-twitter-card-product-image') ];
 		for ( var i = 1; i <= 2; i++ ) {
