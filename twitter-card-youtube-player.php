@@ -1,6 +1,6 @@
 <?php
 
-class Twitter_Card_Youtube_Player {
+class Twitter_Card_Youtube_Player implements Twitter_Card_Player {
 
 	const ENDPOINT = 'http://www.youtube.com/oembed';
 

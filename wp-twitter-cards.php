@@ -2,6 +2,7 @@
 
 if ( !class_exists( 'WP_Twitter_Cards' ) ){
 
+require __DIR__ . '/interface-twitter-card-player.php';
 require __DIR__ . '/twitter-card-youtube-player.php';
 
 class WP_Twitter_Cards {
@@ -137,23 +138,46 @@ class WP_Twitter_Cards {
 		}
 	}
 
+	private static function get_card_players() {
+		return array( 'Twitter_Card_Youtube_Player' );
+	}
+
 	public static function handle_video_url( $field, $old_value, $new_value, $post_id ) {
-		if ( Twitter_Card_Youtube_Player::is_valid_url($new_value) ) {
-			$youtube = new Twitter_Card_Youtube_Player( $new_value );
-			if ( $youtube instanceof Twitter_Card_Youtube_Player ) {
-				$player_data = array(
-					'url' => $youtube->get_player_url(),
-					'width' => $youtube->get_player_width(),
-					'height' => $youtube->get_player_height(),
-					'image' => $youtube->get_player_image()
-				);
-				foreach ( $player_data as $key => $value )
-					update_post_meta( $post_id, get_post_type() . '_twitter_card_twitter_card_player_' . $key, $value );
+		$updated = false;
+
+		foreach ( self::get_card_players() as $player_class ) {
+
+			if (
+				class_exists($player_class)
+				&& in_array('Twitter_Card_Player', class_implements($player_class))
+				&& $player_class::is_valid_url($new_value)
+			) {
+
+				$player = new $player_class( $new_value );
+
+				if ( $player instanceof $player_class ) {
+
+					$player_data = array(
+						'url' => $player->get_player_url(),
+						'width' => $player->get_player_width(),
+						'height' => $player->get_player_height(),
+						'image' => $player->get_player_image()
+					);
+
+					foreach ( $player_data as $key => $value )
+						update_post_meta( $post_id, get_post_type() . '_twitter_card_twitter_card_player_' . $key, $value );
+
+					$updated = true;
+					break;
+				}
 			}
-		} else {
-			foreach ( array( 'url', 'width', 'height', 'image' ) as $key )
-					delete_post_meta( $post_id, get_post_type() . '_twitter_card_twitter_card_player_' . $key );
 		}
+
+		if ( !$updated ) {
+			foreach ( array( 'url', 'width', 'height', 'image' ) as $key )
+				delete_post_meta( $post_id, get_post_type() . '_twitter_card_twitter_card_player_' . $key );
+		}
+
 		return $new_value;
 	}
 
