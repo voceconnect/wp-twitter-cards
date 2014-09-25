@@ -157,15 +157,25 @@ class WP_Twitter_Cards {
 
 				if ( $player instanceof $player_class ) {
 
+					$player_url = $player->get_player_url();
+					$player_width = $player->get_player_width();
+					$player_height = $player->get_player_height();
+					$player_image = $player->get_player_image();
+
 					$player_data = array(
-						'url' => $player->get_player_url(),
-						'width' => $player->get_player_width(),
-						'height' => $player->get_player_height(),
-						'image' => $player->get_player_image()
+						'url' => strpos($player_url, 'https://') === 0 ? $player_url : false,
+						'width' => intval($player_width),
+						'height' => intval($player_height),
+						'image' => $player_image
 					);
 
-					foreach ( $player_data as $key => $value )
-						update_post_meta( $post_id, get_post_type() . '_twitter_card_twitter_card_player_' . $key, $value );
+					foreach ( $player_data as $key => $value ) {
+						$meta_key = sprintf( '%s_twitter_card_twitter_card_player_%s', get_post_type(), $key );
+						if ( $value )
+							update_post_meta( $post_id, $meta_key, $value );
+						else
+							delete_post_meta( $post_id, $meta_key );
+					}
 
 					$updated = true;
 					break;
