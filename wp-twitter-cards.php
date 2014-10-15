@@ -2,6 +2,9 @@
 
 if ( !class_exists( 'WP_Twitter_Cards' ) ){
 
+require __DIR__ . '/interface-twitter-card-player.php';
+require __DIR__ . '/twitter-card-youtube-player.php';
+
 class WP_Twitter_Cards {
 
 	static $card_types = array(
@@ -9,7 +12,8 @@ class WP_Twitter_Cards {
 		'photo' => 'Photo',
 		'summary_large_image' => 'Summary Large Image',
 		'summary' => 'Summary',
-		'product' => 'Product'
+		'product' => 'Product',
+		'player' => 'Player'
 	);
 
 	static $post_types = array();
@@ -20,79 +24,171 @@ class WP_Twitter_Cards {
 		if ( !class_exists( 'MultiPostThumbnails' ) )
 			return _doing_it_wrong( __FUNCTION__, 'The Multi Post Thumbnails plugin must be active for the Twitter Card integration to work correctly.', '' );
 
-
-		add_action( 'add_meta_boxes', array( __CLASS__, 'add_meta_boxes' ), 11, 2 );
 		add_action( 'wp_head', array( __CLASS__, 'render_card_meta' ) );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts' ) );
+		add_filter( 'meta_type_mapping', array( __CLASS__, 'meta_field_mapping' ) );
 
+		self::add_post_meta();
+	}
+
+	public static function meta_field_mapping( $mapping ) {
+		$mapping['non_editable'] = array(
+			'class' => 'Voce_Meta_Field',
+			'args' => array(
+				'display_callbacks' => array( function( $field, $value, $post_id ) {
+					echo '<p>';
+					voce_field_label_display( $field );
+					printf( '<span id="%s">%s</span>', esc_attr( $field->get_input_id() ), $value );
+					echo '</p>';
+				} ),
+				'sanitize_callbacks' => array( function( $field, $old_value, $new_value, $post_id ) {
+					return $old_value;
+				} )
+			)
+		);
+		return $mapping;
+	}
+
+	public static function admin_enqueue_scripts( $hook ) {
+		if ( in_array( $hook, array('post-new.php', 'post.php') ) ) {
+			wp_enqueue_script( 'twitter-card-metabox', plugins_url( '/metabox.js', __FILE__ ), array( 'jquery' ) );
+			wp_localize_script( 'twitter-card-metabox', 'twitterCardOptions', array(
+				'postType' => get_post_type()
+			) );
+		}
+	}
+
+	private static function add_post_meta() {
 		foreach( self::$post_types as $post_type => $card_types ){
-			add_post_type_support( $post_type, $post_type . '_twitter_card' );
+			$group = $post_type . '_twitter_card';
+			$card_type_keys = array_keys($card_types);
 
-			add_metadata_group( $post_type . '_twitter_card', 'Twitter Card' );
+			add_post_type_support( $post_type, $group );
 
+			add_metadata_group( $group, 'Twitter Card' );
 
-			if( !apply_filters( 'twitter_card_title_setting_disabled', false ) ){
-				add_metadata_field( $post_type . '_twitter_card', 'twitter_card_title', 'Card Title' );
-			}
-
-			add_metadata_field( $post_type . '_twitter_card', 'twitter_card_type', 'Card Type', 'dropdown', array(
+			add_metadata_field( $group, 'twitter_card_type', 'Card Type', 'dropdown', array(
 				'options' => array_merge(
 					array( '' => 'None' ),
 					$card_types
 				)
 			) );
 
-			if( !apply_filters( 'twitter_card_description_setting_disabled', false ) ){
-				add_metadata_field( $post_type . '_twitter_card', 'twitter_card_description', 'Card Description', 'textarea' );
+			if( !apply_filters( 'twitter_card_title_setting_disabled', false ) ){
+				add_metadata_field( $group, 'twitter_card_title', 'Card Title' );
 			}
 
-			if( count( array_intersect( array( 'gallery', 'summary_large_image', 'product' ), array_keys( $card_types ) ) ) ){
-				if ( !class_exists( 'MultiPostThumbnails' ) )
-					return _doing_it_wrong( __FUNCTION__, 'The Multi Post Thumbnails plugin must be active for some twitter card types to work correctly.', '' );
+			if( !apply_filters( 'twitter_card_description_setting_disabled', false ) ){
+				add_metadata_field( $group, 'twitter_card_description', 'Card Description', 'textarea' );
+			}
 
-				if( in_array( 'gallery', array_keys( $card_types ) ) ){
+			if( in_array( 'gallery', $card_type_keys ) ){
 
-					for($i=1; $i <= 4; $i++){
-						new MultiPostThumbnails( array(
-							'label' => 'Twitter Card - Gallery Image #' . $i,
-							'id' => 'twitter-card-gallery-image-' . $i,
-							'post_type' => $post_type
-						) );
+				for($i=1; $i <= 4; $i++){
+					new MultiPostThumbnails( array(
+						'label' => 'Twitter Card - Gallery Image #' . $i,
+						'id' => 'twitter-card-gallery-image-' . $i,
+						'post_type' => $post_type
+					) );
+				}
+			}
+
+			if( in_array( 'summary_large_image', $card_type_keys ) ){
+
+				new MultiPostThumbnails( array(
+					'label' => 'Twitter Card - Large Image',
+					'id' => 'twitter-card-large-image',
+					'post_type' => $post_type
+				) );
+			}
+
+			if( in_array( 'product', $card_type_keys ) ){
+
+				add_metadata_field( $group, 'twitter_card_label1', 'Card Label 1', 'text', array(
+					'description' => 'ex. Price'
+				) );
+				add_metadata_field( $group, 'twitter_card_data1', 'Card Data 1', 'text', array(
+					'description' => 'ex. $3.00'
+				) );
+
+				add_metadata_field( $group, 'twitter_card_label2', 'Card Label 2', 'text', array(
+					'description' => 'ex. Color'
+				) );
+				add_metadata_field( $group, 'twitter_card_data2', 'Card Data 2', 'text', array(
+					'description' => 'ex. Black'
+				) );
+
+				new MultiPostThumbnails( array(
+					'label' => 'Twitter Card - Product Image',
+					'id' => 'twitter-card-product-image',
+					'post_type' => $post_type
+				) );
+			}
+
+			if ( in_array( 'player', $card_type_keys ) ) {
+				add_metadata_field( $group, 'twitter_card_video_url', 'Video URL', 'text', array(
+					'description' => 'URL of the video to display on the card.',
+					'sanitize_callbacks' => array( array( __CLASS__, 'handle_video_url' ) )
+				) );
+				add_metadata_field( $group, 'twitter_card_player_url', 'Player URL', 'non_editable' );
+				add_metadata_field( $group, 'twitter_card_player_width', 'Player Width', 'non_editable' );
+				add_metadata_field( $group, 'twitter_card_player_height', 'Player Height', 'non_editable' );
+				add_metadata_field( $group, 'twitter_card_player_image', 'Player Image', 'non_editable' );
+			}
+		}
+	}
+
+	private static function get_card_players() {
+		return array( 'Twitter_Card_Youtube_Player' );
+	}
+
+	public static function handle_video_url( $field, $old_value, $new_value, $post_id ) {
+		$updated = false;
+
+		foreach ( self::get_card_players() as $player_class ) {
+
+			if (
+				class_exists($player_class)
+				&& in_array('Twitter_Card_Player', class_implements($player_class))
+				&& $player_class::is_valid_url($new_value)
+			) {
+
+				$player = new $player_class( $new_value );
+
+				if ( $player instanceof $player_class ) {
+
+					$player_url = $player->get_player_url();
+					$player_width = $player->get_player_width();
+					$player_height = $player->get_player_height();
+					$player_image = $player->get_player_image();
+
+					$player_data = array(
+						'url' => strpos($player_url, 'https://') === 0 ? $player_url : false,
+						'width' => intval($player_width),
+						'height' => intval($player_height),
+						'image' => $player_image
+					);
+
+					foreach ( $player_data as $key => $value ) {
+						$meta_key = sprintf( '%s_twitter_card_twitter_card_player_%s', get_post_type(), $key );
+						if ( $value )
+							update_post_meta( $post_id, $meta_key, $value );
+						else
+							delete_post_meta( $post_id, $meta_key );
 					}
-				}
 
-				if( in_array( 'summary_large_image', array_keys( $card_types ) ) ){
-
-					new MultiPostThumbnails( array(
-						'label' => 'Twitter Card - Large Image',
-						'id' => 'twitter-card-large-image',
-						'post_type' => $post_type
-					) );
-				}
-
-				if( in_array( 'product', array_keys( $card_types ) ) ){
-
-					add_metadata_field( $post_type . '_twitter_card', 'twitter_card_label1', 'Card Label 1', 'text', array(
-						'description' => 'ex. Price'
-					) );
-					add_metadata_field( $post_type . '_twitter_card', 'twitter_card_data1', 'Card Data 1', 'text', array(
-						'description' => 'ex. $3.00'
-					) );
-
-					add_metadata_field( $post_type . '_twitter_card', 'twitter_card_label2', 'Card Label 2', 'text', array(
-						'description' => 'ex. Color'
-					) );
-					add_metadata_field( $post_type . '_twitter_card', 'twitter_card_data2', 'Card Data 2', 'text', array(
-						'description' => 'ex. Black'
-					) );
-
-					new MultiPostThumbnails( array(
-						'label' => 'Twitter Card - Product Image',
-						'id' => 'twitter-card-product-image',
-						'post_type' => $post_type
-					) );
+					$updated = true;
+					break;
 				}
 			}
 		}
+
+		if ( !$updated ) {
+			foreach ( array( 'url', 'width', 'height', 'image' ) as $key )
+				delete_post_meta( $post_id, get_post_type() . '_twitter_card_twitter_card_player_' . $key );
+		}
+
+		return $new_value;
 	}
 
 	/**
@@ -116,7 +212,7 @@ class WP_Twitter_Cards {
 	 * @return string
 	 */
 	static function get_the_title(){
-		$title_setting_val = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_title' );
+		$title_setting_val = get_vpm_value( get_post_type() . '_twitter_card', 'twitter_card_title', get_queried_object_id() );
 		return apply_filters( 'twitter_card_title_setting_disabled', false ) ? get_the_title() : ( !empty( $title_setting_val ) ? $title_setting_val : get_the_title() );
 	}
 
@@ -126,44 +222,9 @@ class WP_Twitter_Cards {
 	 * @return string
 	 */
 	static function get_the_description(){
-		$description_setting_val = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_description' );
+		$description_setting_val = get_vpm_value( get_post_type() . '_twitter_card', 'twitter_card_description', get_queried_object_id() );
 		$description = ( has_excerpt() ) ? get_the_excerpt() : wp_trim_words( strip_shortcodes( strip_tags( get_post( get_queried_object_id() )->post_content ) ), 40, '...' );
 		return apply_filters( 'twitter_card_description_setting_disabled', false ) ? $description : ( !empty( $description_setting_val ) ? $description_setting_val : $description );
-	}
-
-	/**
-	 * Action to remove meta fields and meta boxes based on the Twitter Card type
-	 * Only show fields that are relevent to the currently selected type.
-	 * @param string $post_type
-	 * @param WP_Post $post
-	 */
-	static function add_meta_boxes($post_type, $post){
-		if( !post_type_supports( $post_type, $post_type . '_twitter_card' ) )
-			return;
-
-		$card_type = Voce_Meta_API::GetInstance()->get_meta_value( $post->ID, $post_type . '_twitter_card', 'twitter_card_type' );
-
-		foreach( array( 'normal', 'advanced', 'side' ) as $context ){
-			if( $card_type != 'gallery' ){
-				for($i=1; $i <= 4; $i++)
-					remove_meta_box( sprintf( '%s-twitter-card-gallery-image-%d', $post_type, $i ), $post_type, $context );
-			}
-			if( $card_type != 'summary_large_image' ){
-				remove_meta_box( sprintf( '%s-twitter-card-large-image', $post_type ), $post_type, $context );
-			}
-			if( $card_type != 'product' ){
-				remove_meta_box( sprintf( '%s-twitter-card-product-image', $post_type ), $post_type, $context );
-				for( $i=1; $i<=2; $i++ ){
-					remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_label' . $i );
-					remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_data' . $i );
-				}
-			}
-			if( $card_type == 'none' ){
-				remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_title' );
-				remove_metadata_field( $post_type . '_twitter_card', 'twitter_card_description' );
-			}
-		}
-
 	}
 
 	/**
@@ -174,7 +235,9 @@ class WP_Twitter_Cards {
 		if( !is_singular( array_keys( self::$post_types ) ) )
 			return;
 
-		if( !( $card_type = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_type' ) ) )
+		$vpm_group = get_post_type() . '_twitter_card';
+
+		if( !( $card_type = get_vpm_value( $vpm_group, 'twitter_card_type', get_queried_object_id() ) ) )
 			return;
 
 		$card_data = array(
@@ -207,10 +270,10 @@ class WP_Twitter_Cards {
 				if( MultiPostThumbnails::has_post_thumbnail( get_post_type(), 'twitter-card-product-image', get_queried_object_id() ) )
 					$card_data['image'] = MultiPostThumbnails::get_post_thumbnail_url( get_post_type(), 'twitter-card-product-image', get_queried_object_id(), 'large' );
 
-				$card_data['data1'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_data1' );
-				$card_data['label1'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_label1' );
-				$card_data['data2'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_data2' );
-				$card_data['label2'] = Voce_Meta_API::GetInstance()->get_meta_value( get_queried_object_id(), get_post_type() . '_twitter_card', 'twitter_card_label2' );
+				$card_data['data1'] = get_vpm_value( $vpm_group, 'twitter_card_data1', get_queried_object_id() );
+				$card_data['label1'] = get_vpm_value( $vpm_group, 'twitter_card_label1', get_queried_object_id() );
+				$card_data['data2'] = get_vpm_value( $vpm_group, 'twitter_card_data2', get_queried_object_id() );
+				$card_data['label2'] = get_vpm_value( $vpm_group, 'twitter_card_label2', get_queried_object_id() );
 			break;
 			case 'photo':
 			case 'summary':
@@ -220,6 +283,14 @@ class WP_Twitter_Cards {
 					if( $image )
 						$card_data['image'] = $image[0];
 				}
+
+			break;
+			case 'player':
+
+				$card_data['player'] = get_vpm_value( $vpm_group, 'twitter_card_player_url', get_queried_object_id() );
+				$card_data['player:width'] = get_vpm_value( $vpm_group, 'twitter_card_player_width', get_queried_object_id() );
+				$card_data['player:height'] = get_vpm_value( $vpm_group, 'twitter_card_player_height', get_queried_object_id() );
+				$card_data['image'] = get_vpm_value( $vpm_group, 'twitter_card_player_image', get_queried_object_id() );
 
 			break;
 		}
@@ -243,6 +314,13 @@ class WP_Twitter_Cards {
 				if( !isset( $card_data[$required] ) || empty( $card_data[$required] ) )
 					return;
 			}
+		} else if ( $card_type == 'player' ) {
+			foreach ( array( 'title', 'description', 'image', 'player', 'player:width', 'player:height' ) as $required ) {
+				if( !isset( $card_data[$required] ) || empty( $card_data[$required] ) )
+					return;
+			}
+			if ( !empty($card_data['player:stream']) && empty($card_data['player:stream:content_type']) )
+				return;
 		}
 
 

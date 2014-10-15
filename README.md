@@ -3,8 +3,8 @@ WP Twitter Cards
 Contributors: voceplatforms, kevinlangleyjr  
 Tags: twitter, cards, meta, helper  
 Requires at least: 3.0  
-Tested up to: 3.6  
-Stable tag: 1.0.3
+Tested up to: 4.0  
+Stable tag: 1.1
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -34,6 +34,8 @@ On the WordPress `init` hook:
 In the post edit view configure the Twitter Card metabox to enable the tag output.
 
 ## Changelog
+**1.1**
+* Adding support for player card
 
 **1.0**
 * Initial release
