@@ -23,7 +23,7 @@
 	"require": {
 		"voceconnect/wp-dependencies": "~0.1",
 		"voceconnect/voce-post-meta": "~1.4",
-		"wpackagist/multiple-post-thumbnails": "~1.6"
+		"wpackagist-plugin/multiple-post-thumbnails": "~1.6"
 	},
 	"autoload": {
 		"files": ["wp-twitter-cards.php"]

@@ -1,30 +1,32 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
-    "hash": "726436c0211612b5815de1e3cadb31fe",
+    "hash": "5f64b5623e0e099ee4f6616e354213e6",
     "packages": [
         {
             "name": "composer/installers",
-            "version": "v1.0.12",
+            "version": "v1.0.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "4127333b03e8b4c08d081958548aae5419d1a2fa"
+                "reference": "d64e23fce42a4063d63262b19b8e7c0f3b5e4c45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/4127333b03e8b4c08d081958548aae5419d1a2fa",
-                "reference": "4127333b03e8b4c08d081958548aae5419d1a2fa",
+                "url": "https://api.github.com/repos/composer/installers/zipball/d64e23fce42a4063d63262b19b8e7c0f3b5e4c45",
+                "reference": "d64e23fce42a4063d63262b19b8e7c0f3b5e4c45",
                 "shasum": ""
             },
             "replace": {
+                "roundcube/plugin-installer": "*",
                 "shama/baton": "*"
             },
             "require-dev": {
                 "composer/composer": "1.0.*@dev",
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "4.1.*"
             },
             "type": "composer-installer",
             "extra": {
@@ -46,27 +48,34 @@
                 {
                     "name": "Kyle Robinson Young",
                     "email": "kyle@dontkry.com",
-                    "homepage": "https://github.com/shama",
-                    "role": "Developer"
+                    "homepage": "https://github.com/shama"
                 }
             ],
             "description": "A multi-framework Composer library installer",
             "homepage": "http://composer.github.com/installers/",
             "keywords": [
                 "Craft",
+                "Dolibarr",
                 "Hurad",
                 "MODX Evo",
                 "OXID",
+                "SMF",
+                "Thelia",
                 "WolfCMS",
                 "agl",
+                "aimeos",
                 "annotatecms",
+                "bitrix",
                 "cakephp",
+                "chef",
                 "codeigniter",
                 "concrete5",
                 "croogo",
+                "dokuwiki",
                 "drupal",
                 "elgg",
                 "fuelphp",
+                "grav",
                 "installer",
                 "joomla",
                 "kohana",
@@ -76,9 +85,12 @@
                 "mako",
                 "mediawiki",
                 "modulework",
+                "moodle",
                 "phpbb",
                 "piwik",
                 "ppi",
+                "puppet",
+                "roundcube",
                 "shopware",
                 "silverstripe",
                 "symfony",
@@ -87,20 +99,20 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2014-02-24 04:21:34"
+            "time": "2015-02-18 17:17:01"
         },
         {
             "name": "voceconnect/voce-post-meta",
-            "version": "v1.4.2",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/voceconnect/voce-post-meta.git",
-                "reference": "ebdb07aeb79017bfee658fc1a7d60127e458a29b"
+                "reference": "1804b00f272c106eefbc460fd03adc0046e8d9fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/voceconnect/voce-post-meta/zipball/ebdb07aeb79017bfee658fc1a7d60127e458a29b",
-                "reference": "ebdb07aeb79017bfee658fc1a7d60127e458a29b",
+                "url": "https://api.github.com/repos/voceconnect/voce-post-meta/zipball/1804b00f272c106eefbc460fd03adc0046e8d9fe",
+                "reference": "1804b00f272c106eefbc460fd03adc0046e8d9fe",
                 "shasum": ""
             },
             "type": "library",
@@ -114,10 +126,6 @@
                 "GPLv2+"
             ],
             "authors": [
-                {
-                    "name": "Michael Pretty",
-                    "email": "mpretty@voceconnect.com"
-                },
                 {
                     "name": "Kevin Langley Jr",
                     "email": "klangley@voceconnect.com"
@@ -133,6 +141,10 @@
                 {
                     "name": "Gary Smirny",
                     "email": "gary@voceconnect.com"
+                },
+                {
+                    "name": "Michael Pretty",
+                    "email": "mpretty@voceconnect.com"
                 }
             ],
             "description": "Easily create post metaboxes and add fields",
@@ -140,20 +152,20 @@
                 "post meta",
                 "wordpress"
             ],
-            "time": "2014-01-02 20:55:53"
+            "time": "2015-04-02 20:53:19"
         },
         {
             "name": "voceconnect/wp-dependencies",
-            "version": "v0.1.1",
+            "version": "v0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/voceconnect/wp-dependencies.git",
-                "reference": "4f3f58d5abef36b28bcdd8e97c3fef6687201d65"
+                "reference": "33c3cfc48be261275222c6c3e3866e325220d56d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/voceconnect/wp-dependencies/zipball/4f3f58d5abef36b28bcdd8e97c3fef6687201d65",
-                "reference": "4f3f58d5abef36b28bcdd8e97c3fef6687201d65",
+                "url": "https://api.github.com/repos/voceconnect/wp-dependencies/zipball/33c3cfc48be261275222c6c3e3866e325220d56d",
+                "reference": "33c3cfc48be261275222c6c3e3866e325220d56d",
                 "shasum": ""
             },
             "require": {
@@ -174,24 +186,24 @@
             ],
             "authors": [
                 {
-                    "name": "Michael Prettty",
+                    "name": "Mike Pretty",
                     "email": "mpretty@voceconnect.com"
                 }
             ],
             "description": "A composer package for WordPress to help manage plugin dependencies.",
-            "time": "2013-11-05 19:12:23"
+            "time": "2014-04-25 13:01:40"
         },
         {
-            "name": "wpackagist/multiple-post-thumbnails",
-            "version": "1.6",
+            "name": "wpackagist-plugin/multiple-post-thumbnails",
+            "version": "1.6.5",
             "source": {
                 "type": "svn",
                 "url": "http://plugins.svn.wordpress.org/multiple-post-thumbnails/",
-                "reference": "tags/1.6"
+                "reference": "tags/1.6.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://downloads.wordpress.org/plugin/multiple-post-thumbnails.1.6.zip",
+                "url": "https://downloads.wordpress.org/plugin/multiple-post-thumbnails.1.6.5.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -199,23 +211,15 @@
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "http://wordpress.org/extend/plugins/multiple-post-thumbnails"
+            "homepage": "https://wordpress.org/plugins/multiple-post-thumbnails/"
         }
     ],
-    "packages-dev": [
-
-    ],
-    "aliases": [
-
-    ],
+    "packages-dev": [],
+    "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ],
-    "platform": [
-
-    ],
-    "platform-dev": [
-
-    ]
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
 }
