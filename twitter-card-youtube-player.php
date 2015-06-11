@@ -16,19 +16,29 @@ class Twitter_Card_Youtube_Player implements Twitter_Card_Player {
 			'url' => $video_url,
 			'format' => 'json'
 		);
-		$url = add_query_arg( $args, self::ENDPOINT );
+		$url = esc_url_raw( add_query_arg( $args, self::ENDPOINT ) );
 
-		$request = wp_remote_get( $url );
+		if ( function_exists( 'wpcom_vip_file_get_contents' ) ) {
+			$_data = wpcom_vip_file_get_contents( $url );
 
-		if (
-			is_array($request)
-			&& !empty($request['response']['code'])
-			&& $request['response']['code'] === 200
-			&& !empty($request['body'])
-		) {
-			$_data = json_decode($request['body']);
-			if ( !is_null($_data) )
-				$data = $_data;
+			if ( !empty( $_data ) ) {
+				$_data = json_decode( $_data );
+			}
+		} else {
+			$request = wp_remote_get( $url );
+
+			if (
+				is_array( $request )
+				&& !empty( $request['response']['code'] )
+				&& $request['response']['code'] === 200
+				&& !empty( $request['body'] )
+			) {
+				$_data = json_decode($request['body']);
+			}
+		}
+
+		if ( isset( $_data ) && !is_null( $_data ) ) {
+			$data = $_data;
 		}
 
 		return $data;
