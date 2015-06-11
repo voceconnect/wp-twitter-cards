@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5f64b5623e0e099ee4f6616e354213e6",
+    "hash": "6604cb238a25cacd088bfd0fb930e0f1",
     "packages": [
         {
             "name": "composer/installers",
@@ -103,16 +103,16 @@
         },
         {
             "name": "voceconnect/voce-post-meta",
-            "version": "1.8.0",
+            "version": "1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/voceconnect/voce-post-meta.git",
-                "reference": "1804b00f272c106eefbc460fd03adc0046e8d9fe"
+                "reference": "aa9f078df64f8d2a09a46d5c803b90e7806319a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/voceconnect/voce-post-meta/zipball/1804b00f272c106eefbc460fd03adc0046e8d9fe",
-                "reference": "1804b00f272c106eefbc460fd03adc0046e8d9fe",
+                "url": "https://api.github.com/repos/voceconnect/voce-post-meta/zipball/aa9f078df64f8d2a09a46d5c803b90e7806319a5",
+                "reference": "aa9f078df64f8d2a09a46d5c803b90e7806319a5",
                 "shasum": ""
             },
             "type": "library",
@@ -143,6 +143,10 @@
                     "email": "gary@voceconnect.com"
                 },
                 {
+                    "name": "Sean McCafferty",
+                    "email": "seanmcc@voceconnect.com"
+                },
+                {
                     "name": "Michael Pretty",
                     "email": "mpretty@voceconnect.com"
                 }
@@ -152,7 +156,7 @@
                 "post meta",
                 "wordpress"
             ],
-            "time": "2015-04-02 20:53:19"
+            "time": "2015-06-11 02:03:13"
         },
         {
             "name": "voceconnect/wp-dependencies",
@@ -195,15 +199,15 @@
         },
         {
             "name": "wpackagist-plugin/multiple-post-thumbnails",
-            "version": "1.6.5",
+            "version": "1.6.6",
             "source": {
                 "type": "svn",
                 "url": "http://plugins.svn.wordpress.org/multiple-post-thumbnails/",
-                "reference": "tags/1.6.5"
+                "reference": "trunk"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/multiple-post-thumbnails.1.6.5.zip",
+                "url": "https://downloads.wordpress.org/plugin/multiple-post-thumbnails.zip",
                 "reference": null,
                 "shasum": null
             },
