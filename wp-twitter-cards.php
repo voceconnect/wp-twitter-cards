@@ -51,7 +51,8 @@ class WP_Twitter_Cards {
 
 	public static function admin_enqueue_scripts( $hook ) {
 		if ( in_array( $hook, array('post-new.php', 'post.php') ) ) {
-			wp_enqueue_script( 'twitter-card-metabox', plugins_url( '/metabox.js', __FILE__ ), array( 'jquery' ) );
+			$this_plugin_directory_uri = apply_filters( 'twitter_card_install_directory', plugins_url( '', __FILE__ ), __FILE__ );
+			wp_enqueue_script( 'twitter-card-metabox', sprintf( '%s/%s', untrailingslashit( $this_plugin_directory_uri ), 'metabox.js' ), array( 'jquery' ) );
 			wp_localize_script( 'twitter-card-metabox', 'twitterCardOptions', array(
 				'postType' => get_post_type()
 			) );
