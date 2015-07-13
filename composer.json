@@ -21,7 +21,7 @@
 	],
 	"type": "library",
 	"require": {
-		"voceconnect/wp-dependencies": "~0.1",
+		"voceconnect/wp-dependencies": "~0.2",
 		"voceconnect/voce-post-meta": "~1.9",
 		"wpackagist-plugin/multiple-post-thumbnails": "~1.6"
 	},

@@ -34,6 +34,9 @@ On the WordPress `init` hook:
 In the post edit view configure the Twitter Card metabox to enable the tag output.
 
 ## Changelog
+**1.2.0**
+* Modify handling to prevent fatal errors when dependencies are loaded before WP
+
 **1.1**
 * Adding support for player card
 
