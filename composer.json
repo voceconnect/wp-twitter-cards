@@ -26,6 +26,11 @@
 		"wpackagist-plugin/multiple-post-thumbnails": "~1.6"
 	},
 	"autoload": {
+		"classmap": [
+			"src/wp-twitter-cards.php",
+			"src/interface-twitter-card-player.php",
+			"src/twitter-card-youtube-player.php"
+		],
 		"files": ["wp-twitter-cards.php"]
 	}
 }
