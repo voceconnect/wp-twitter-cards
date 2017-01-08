@@ -13,12 +13,11 @@
 		{
 			"type": "composer",
 			"url": "http://wp-plugins.packagist.voceconnect.com/"
-		},
-		{
-			"type": "composer",
-			"url": "http://packagist.voceconnect.com"
 		}
 	],
+	"config": {
+		"secure-http": false
+	},
 	"type": "library",
 	"require": {
 		"voceconnect/wp-dependencies": "~0.2",
